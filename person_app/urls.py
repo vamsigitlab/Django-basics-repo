@@ -5,4 +5,5 @@ from person_app import views
 
 urlpatterns = [
     path('index/', views.indexView),
+    path('detail/<int:person_id>/', views.person_detail_view),
 ]
