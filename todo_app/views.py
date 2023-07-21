@@ -4,8 +4,12 @@ from todo_app.models import Todo
 # Create your views here.
 
 def list_view(request):
+    search_string = request.GET.get('search', "")
+    todo_list = Todo.objects.all().order_by("-created_at")
+    if search_string != "":
+        todo_list = todo_list.filter(title__icontains=search_string)
     data = {
-        "todo_list": Todo.objects.all().order_by("-created_at")
+        "todo_list": todo_list
     }
     return render(request, "list.html", context=data)
 
