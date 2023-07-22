@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from todo_app.models import Todo
-
+from django.http import HttpResponse
 # Create your views here.
 
 def list_view(request):
@@ -26,4 +26,14 @@ def update_view(request, todo_id):
     pass
 
 def delete_view(request, todo_id):
-    pass
+    if request.method == 'GET':
+        return HttpResponse("Error in the method format")
+    else:
+        if request.method == 'POST':
+            try:
+                todo_object = Todo.objects.get(pk=todo_id)
+                todo_object.delete()
+                return redirect('todo_list_view')
+            except Todo.DoesNotExist:
+                print("Object with this id doesn't exist")
+                return redirect('todo_list_view')
