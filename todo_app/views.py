@@ -23,7 +23,16 @@ def create_view(request):
     return redirect("todo_list_view")
 
 def update_view(request, todo_id):
-    pass
+    if request.method == "GET":
+        return HttpResponse("Cannot be updated with this method")
+    else:
+        try:
+            todo_object = Todo.objects.get(pk=todo_id)
+            todo_object.completed = True
+            todo_object.save()
+            return redirect('todo_list_view')
+        except Todo.DoesNotExist:
+            return redirect('todo_list_view')
 
 def delete_view(request, todo_id):
     if request.method == 'GET':
@@ -35,5 +44,4 @@ def delete_view(request, todo_id):
                 todo_object.delete()
                 return redirect('todo_list_view')
             except Todo.DoesNotExist:
-                print("Object with this id doesn't exist")
                 return redirect('todo_list_view')

@@ -36,7 +36,11 @@
             </thead>
             <tbody>
         {% for todo in todo_list %}
-              <tr>
+              <tr class="{% if todo.completed == True %}
+              table-success
+              {% else %}
+              table-danger
+              {% endif %}">
                 <th scope="row">{{todo.id}}</th>
                 <td>{{todo.title}}</td>
                 <td>{{todo.created_at}}</td>
@@ -46,7 +50,12 @@
                     <button type="submit" class="btn btn-danger">Delete</button>
                   </form>
                   <br>
+                  {% if todo.completed == False %}
+                  <form method="POST" action="{% url 'todo_update_view' todo.id %}">
+                    {% csrf_token %}
                     <button class="btn btn-success">Mark as Complete</button>
+                  </form>
+                  {% endif %}
                 </td>
               </tr>
         {% endfor %}
