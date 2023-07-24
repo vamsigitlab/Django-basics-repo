@@ -5,9 +5,12 @@ from django.http import HttpResponse
 
 def list_view(request):
     search_string = request.GET.get('search', "")
+    status = request.GET.get('status', "")
     todo_list = Todo.objects.all().order_by("-created_at")
     if search_string != "":
         todo_list = todo_list.filter(title__icontains=search_string)
+    if status!="":
+        todo_list = todo_list.filter(completed=status)
     data = {
         "todo_list": todo_list
     }
